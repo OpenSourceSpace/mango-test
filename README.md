@@ -35,7 +35,8 @@ Mango地址：http://mango.jfaster.org/
                   +"1"//版本号
                   +ShardUtil.getShardKeyByID(merchantNo,8,10,2,2)//分库分表Shard值
                   +sdf.format(new Date())//时间戳
-                  + RandomCodeUtil.getRandomNum(MangoContant.ORDER_NO_RANDOWM_LENGTH) ;//随机数，可以用数据库或者其他方式生成
+                  + RandomCodeUtil.getRandomNum(MangoContant.ORDER_NO_RANDOWM_LENGTH) ;
+                  //随机数，可以用数据库或者其他方式生成
           return orderNo;
       }
 ```
