@@ -33,7 +33,7 @@ Mango地址：http://mango.jfaster.org/
           String orderNo=
                   "P" //系统号
                   +"1"//版本号
-                  +ShardUtil.getShardKeyByID(merchantNo,MangoContant.ORDER_SPLIT_ORDER_COUNT,MangoContant.ORDER_SPLIT_TABLE_COUNT,MangoContant.DB_SHARD_LENGTH,MangoContant.TABLE_SAHRD_LENGTH)//分库分表Shard值
+                  +ShardUtil.getShardKeyByID(merchantNo,8,10,2,2)//分库分表Shard值
                   +sdf.format(new Date())//时间戳
                   + RandomCodeUtil.getRandomNum(MangoContant.ORDER_NO_RANDOWM_LENGTH) ;//随机数，可以用数据库或者其他方式生成
           return orderNo;
@@ -55,7 +55,7 @@ getShardKeyByID时要固定未来最大的分库分表的规模
 
 由步骤1的方法我们生成了一个订单号 P10604201712231334054319
 
-对应的shardId九十0604. 这个对于所有merchantNo都是一致的
+对应的shardId是0604. 这个对于所有merchantNo都是一致的
 
 这样的好处是确保一个商家的订单都在同个库，同个表中。
 
@@ -96,7 +96,7 @@ public String getDataSourceFactoryName(String shardID) {
 //等我们有了8个库，可以这样
 ```
 public String getDataSourceFactoryName(String shardID) {
-        String dbname="dsf"+String.valueOf(Integer.valueOf(shardID.substring(0,2))%8);//2个库
+        String dbname="dsf"+String.valueOf(Integer.valueOf(shardID.substring(0,2))%8);//8个库
         return dbname;
     }
 ```
@@ -127,6 +127,6 @@ public String getDataSourceFactoryName(String shardID) {
 
 或者干脆做一个大表或者nosql的去存储一个快照。
 
-还有一个问题，如果一个商家的订单数上亿了，那我们就不能用一张表存了，这就涉及到我们最初考虑的问题
+还有一个问题，如果一个商家的订单数上亿了，那我们就不能用一张表存了，这就涉及到我们最初考虑的问题：
 
 从一开始就要确定我们系统的最大容量。
